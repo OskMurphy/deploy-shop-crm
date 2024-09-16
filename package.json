@@ -1,21 +1,22 @@
 {
   "name": "shop-crm",
   "version": "1.0.0",
-  "description": "A shop for Heroku",
+
+  "description": "Проект интернет-магазина с встроенным CRM",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "",
-    "build": ""
+    "start": "cd server && npm start",
+    "build": "cd client && npm i && npm run build && cd ../server && npm i && npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OskMurphy/shop-crm.git"
+    "url": "git+https://github.com/lesliefernsby/shop-crm.git"
   },
-  "author": "L.F., D.K., O.A.",
-  "license": "MIT",
+  "author": "",
+  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/OskMurphy/shop-crm/issues"
+    "url": "https://github.com/lesliefernsby/shop-crm/issues"
   },
-  "homepage": "https://github.com/OskMurphy/shop-crm#readme"
+  "homepage": "https://github.com/lesliefernsby/shop-crm#readme"
+
 }

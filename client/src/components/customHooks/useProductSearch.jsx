@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
+// import { config } from "../../redux/constants";
 import { productsListActions } from '../../redux/actions/productsListActions';
 
 export const useProductSearch = (query, pageNumber) => {
@@ -16,33 +17,26 @@ export const useProductSearch = (query, pageNumber) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(productsListActions.setProducts([]))
-  }, [query])
+  }, [filtersCategories, query])
 
   useEffect(() => {
-    // dispatch(productsListActions.setProducts([]))
+    //dispatch(productsListActions.setProducts([]))
     dispatch(productsListActions.setPending(true));
     dispatch(productsListActions.setError(false));
     let cancel
     axios({
       method: 'GET',
-      // withCredentials: true,
-      url: 'http://localhost:3001/products',
+      // url: `${config.API_URL}/products`,
+      url: '/products',
       params: { q: query, page: pageNumber, filters: { categories: filtersCategories }, perPage },
       // eslint-disable-next-line no-return-assign
       cancelToken: new axios.CancelToken(c => cancel = c)
     })
       .then(res => {
         const newData = res?.data || [];
-        for (let i = 0; newData.length > i; i +=1  ) {
-          const neDataItem =  newData[i];
-          for (let j = 0; j < products.length; j+=1) {
-            const prItem = products[j];
-              if (prItem.id === neDataItem.id) {
-                newData.splice(j, 1)
-              }
-          }
-        }
-        dispatch(productsListActions.setProducts([...new Set([...products, ...newData.map(b=>b)])]))
+       
+        const map = new Map([...products, ...newData].map(item => [item.id, item]));
+        dispatch(productsListActions.setProducts([...map.values()]));
         setHasMore(newData.length > 0)
         dispatch(productsListActions.setPending(false));
       }).catch(e => {
